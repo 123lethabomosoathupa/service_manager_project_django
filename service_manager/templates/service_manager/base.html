@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Service Manager</title>
+</head>
+<body>
+    <h1>Service Manager</h1>
+    <nav>
+        <a href="{% url 'service_list' %}">All Services</a> |
+        <a href="{% url 'service_create' %}">Add Service</a>
+    </nav>
+    <hr>
+    {% block content %}{% endblock %}
+</body>
+</html>

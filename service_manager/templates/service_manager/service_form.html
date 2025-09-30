@@ -1,0 +1,9 @@
+{% extends 'service_manager/base.html' %}
+{% block content %}
+<h2>Service Form</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+</form>
+{% endblock %}
