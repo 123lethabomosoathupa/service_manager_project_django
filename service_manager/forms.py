@@ -4,4 +4,4 @@ from .models import Service
 class ServiceForm(forms.ModelForm):
     class Meta:
         model = Service
-        fields = ['name', 'description']
+        fields = ['title', 'description', 'image']  # Include image upload field
