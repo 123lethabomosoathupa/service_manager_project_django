@@ -1,35 +1,8 @@
-A Django-based web application that manages services, customers, and bookings. Key features include:
+Hello I have a overheating problem with my BMW M2. Id like to book it for a service and to fix this issue. Please see attached the warning I got on my infotainment screen.
 
-Service Management
-
-Create, update, and delete services.
-
-Each service has a title, description, price, and availability date.
-
-Customer Management
-
-Add and manage customers.
-
-Track customer details and booking history.
-
-Service Booking
-
-Customers can book available services.
-
-Single-date availability per service to prevent double-booking.
-
-User Authentication
-
-Superusers can manage services and customers.
-
-Login required for administrative actions.
-
-Admin Interface
-
-Manage services, customers, and bookings via Django admin.
-
-HTMX/Frontend Features
-
-Interactive UI for booking and managing services.
-
-Responsive layout with images above service descriptions.
+i had a minor acciendent and the front on Mercedes Benz A45 AMG is light damage please advise when you can help
+I was recently in an accident. I need someone to help me restore my car. I am based in Silverlakes Pretoria East. My cell is 579 921 2346
+Hi, I was recently involved in an accident and need a reputable panel beater/auto body shop to restore my car. As you can see from the photo, there's significant front-end damage that needs professional attention.
+I'm located in Silverlakes, Pretoria East, and would appreciate recommendations or quotes from experienced workshops in the area.
+Please contact me on 079 921 2346 if you can assist.
+Thanks in advance.
