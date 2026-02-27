@@ -5,9 +5,7 @@ Django settings for service_project project.
 import os
 from pathlib import Path
 import environ
-# import cloudinary
-# import cloudinary.uploader
-# import cloudinary.api
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -17,10 +15,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-# SECRET KEY
 SECRET_KEY = env("SECRET_KEY", default="dev-secret")
 
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.onrender.com']
 
 
@@ -35,15 +33,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    # your app
     'service_manager',
-
-    # Cloudinary 
-    # 'cloudinary',
-    # 'cloudinary_storage',
+    'cloudinary',
+    'cloudinary_storage',
 ]
-
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/services/'
@@ -55,6 +48,7 @@ LOGIN_REDIRECT_URL = '/services/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -62,7 +56,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
 
 ROOT_URLCONF = 'service_project.urls'
 
@@ -87,19 +80,17 @@ TEMPLATES = [
     },
 ]
 
-
 WSGI_APPLICATION = 'service_project.wsgi.application'
 
 
 # -----------------------------------
-# DATABASE (USE SQLITE LOCALLY)
+# DATABASE
 # -----------------------------------
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}"
+    )
 }
 
 
@@ -108,18 +99,10 @@ DATABASES = {
 # -----------------------------------
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
 
@@ -138,14 +121,15 @@ USE_TZ = True
 # -----------------------------------
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-if not DEBUG:
-    STATIC_ROOT = BASE_DIR / 'staticfiles'
+if os.path.exists(BASE_DIR / 'static'):
+    STATICFILES_DIRS = [BASE_DIR / 'static']
 
 
 # -----------------------------------
-# MEDIA FILES (LOCAL STORAGE)
+# MEDIA FILES
 # -----------------------------------
 
 MEDIA_URL = '/media/'
@@ -153,20 +137,21 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 
 # -----------------------------------
-# CLOUDINARY STORAGE (COMMENTED OUT - UNCOMMENT TO USE CLOUDINARY)
+# CLOUDINARY
 # -----------------------------------
 
-# CLOUDINARY_STORAGE = {
-#     'CLOUD_NAME': env("CLOUDINARY_CLOUD_NAME"),
-#     'API_KEY': env("CLOUDINARY_API_KEY"),
-#     'API_SECRET': env("CLOUDINARY_API_SECRET"),
-# }
-# 
-# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': env("CLOUDINARY_CLOUD_NAME", default=""),
+    'API_KEY': env("CLOUDINARY_API_KEY", default=""),
+    'API_SECRET': env("CLOUDINARY_API_SECRET", default=""),
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
+# -----------------------------------
+# DEFAULT PK
+# -----------------------------------
 
-
-
-# Default PK
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
